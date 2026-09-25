@@ -6,12 +6,20 @@ import { StarfieldCanvas } from "@/components/birthday/cosmic/starfield-canvas";
 import { birthdayConfig } from "@/lib/birthday-config";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
+type Props = {
+  /** Called when the video starts playing (so background music can pause). */
+  onVideoPlay?: () => void;
+  /** Called when the video is paused or ends (so background music can resume). */
+  onVideoPause?: () => void;
+};
+
 /**
  * VideoChapter
  * A cinematic video frame. Letterbox bars top/bottom (cinema style).
  * Custom controls with golden accents.
+ * Notifies parent of play/pause so the background music can coordinate.
  */
-export function VideoChapter() {
+export function VideoChapter({ onVideoPlay, onVideoPause }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
@@ -22,8 +30,15 @@ export function VideoChapter() {
     if (playing) {
       videoRef.current.pause();
       setPlaying(false);
+      onVideoPause?.();
     } else {
-      videoRef.current.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      videoRef.current
+        .play()
+        .then(() => {
+          setPlaying(true);
+          onVideoPlay?.();
+        })
+        .catch(() => setPlaying(false));
     }
   };
 
@@ -31,6 +46,12 @@ export function VideoChapter() {
     if (!videoRef.current) return;
     videoRef.current.muted = !videoRef.current.muted;
     setMuted(videoRef.current.muted);
+  };
+
+  // When the video ends naturally, treat it like a pause so the music resumes.
+  const handleEnded = () => {
+    setPlaying(false);
+    onVideoPause?.();
   };
 
   return (
@@ -70,6 +91,7 @@ export function VideoChapter() {
               muted={muted}
               controls={false}
               onError={() => setVideoMissing(true)}
+              onEnded={handleEnded}
               className="h-full w-full object-contain"
             />
           ) : (
@@ -112,14 +134,22 @@ export function VideoChapter() {
                 aria-label={playing ? "Pause" : "Play"}
                 className="grid h-10 w-10 place-items-center rounded-full bg-[#D4A574] text-[#06030F] shadow-lg transition hover:bg-[#E8839A] hover:text-[#FFF4E0]"
               >
-                {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 translate-x-0.5" fill="currentColor" />}
+                {playing ? (
+                  <Pause className="h-5 w-5" />
+                ) : (
+                  <Play className="h-5 w-5 translate-x-0.5" fill="currentColor" />
+                )}
               </button>
               <button
                 onClick={toggleMute}
                 aria-label={muted ? "Unmute" : "Mute"}
                 className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-[#F5F0E1] backdrop-blur transition hover:bg-white/20"
               >
-                {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                {muted ? (
+                  <VolumeX className="h-5 w-5" />
+                ) : (
+                  <Volume2 className="h-5 w-5" />
+                )}
               </button>
               <p className="ml-auto text-xs italic text-[#F5F0E1]/70">
                 {birthdayConfig.chapters.video.caption}

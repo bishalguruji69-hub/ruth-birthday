@@ -11,7 +11,6 @@ import { BackgroundMusic } from "@/components/birthday/parts/background-music";
 
 /**
  * CosmicJourney
- * The single scroll-driven experience.
  *
  * Flow:
  * 1. Opening (locked, click to begin)
@@ -20,9 +19,13 @@ import { BackgroundMusic } from "@/components/birthday/parts/background-music";
  * 4. Poem chapter (sunset, Nepali poem writes itself)
  * 5. Video chapter (cinematic player)
  * 6. Promise chapter (final message + signature)
+ *
+ * Audio coordination: music starts on first user interaction (the click-to-begin),
+ * then pauses automatically while the video is playing and resumes when it pauses.
  */
 export function CosmicJourney() {
   const [began, setBegan] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     if (began) {
@@ -40,6 +43,7 @@ export function CosmicJourney() {
     document.body.style.overflow = "hidden";
     window.scrollTo({ top: 0, behavior: "smooth" });
     setBegan(false);
+    setVideoPlaying(false);
   };
 
   return (
@@ -51,12 +55,18 @@ export function CosmicJourney() {
           <CosmosChapter />
           <HerLightChapter />
           <PoemChapter />
-          <VideoChapter />
+          <VideoChapter
+            onVideoPlay={() => setVideoPlaying(true)}
+            onVideoPause={() => setVideoPlaying(false)}
+          />
           <PromiseChapter onReplay={replay} />
         </>
       )}
 
-      <BackgroundMusic autoStart={began} />
+      {/* Background music:
+          - autoStart = began → music starts on first user interaction (the click-to-begin)
+          - pauseForVideo = videoPlaying → music pauses while video plays, resumes when video pauses */}
+      <BackgroundMusic autoStart={began} pauseForVideo={videoPlaying} />
     </main>
   );
 }

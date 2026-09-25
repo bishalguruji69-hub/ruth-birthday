@@ -106,11 +106,11 @@ export const birthdayConfig = {
   assets: {
     //heroPhoto: "/assets/photos/together.jpeg",        // Chapter 3 — her photo floating in space
     herLightPhotos: [
-      "/assets/photos/together.jpeg",
-      "/assets/photos/gallery-2.jpg",
-      "/assets/photos/gallery-3.jpg",
-      "/assets/photos/gallery-4.jpg",
-      "/assets/photos/gallery-5.jpg",
+      "/assets/photos/first_image.jpg",
+      "/assets/photos/image_3.jpeg",
+      "/assets/photos/image_4.jpeg",
+      "/assets/photos/image_5.jpeg",
+      "/assets/photos/image_6.jpg",
     ],
     video: "/assets/video/birthday_video.mp4",
   },
