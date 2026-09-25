@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.5rem;
+  /* Cosmic-romantic palette */
+  --background: #06030F;                /* deep cosmic black-purple */
+  --foreground: #F5F0E1;                /* warm starlight */
+  --card: rgba(245, 240, 225, 0.06);
+  --card-foreground: #F5F0E1;
+  --popover: rgba(245, 240, 225, 0.08);
+  --popover-foreground: #F5F0E1;
+  --primary: #D4A574;                   /* celestial gold */
+  --primary-foreground: #06030F;
+  --secondary: rgba(232, 131, 154, 0.12);
+  --secondary-foreground: #F5F0E1;
+  --muted: rgba(245, 240, 225, 0.08);
+  --muted-foreground: rgba(245, 240, 225, 0.55);
+  --accent: #E8839A;                    /* cosmic rose */
+  --accent-foreground: #F5F0E1;
+  --destructive: #E63946;
+  --border: rgba(245, 240, 225, 0.10);
+  --input: rgba(245, 240, 225, 0.12);
+  --ring: #D4A574;
+
+  /* Chapter palette stops */
+  --cosmic-deep: #06030F;
+  --cosmic-mid: #1A0E2E;
+  --cosmic-violet: #2D1B4E;
+  --sunset-peach: #FFC9A8;
+  --sunset-rose: #E8839A;
+  --sunset-amber: #D4A574;
+  --dawn-cream: #FFF4E0;
+  --maroon-deep: #5C0A1F;
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-script: var(--font-dancing), cursive;
+  --font-devanagari: var(--font-devanagari), serif;
+  --font-mono: var(--font-geist-mono, monospace);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    overflow-x: hidden;
+    background: var(--cosmic-deep);
+  }
+}
+
+/* ====== Cosmic typography utilities ====== */
+.font-display { font-family: var(--font-cormorant), Georgia, serif; }
+.font-script  { font-family: var(--font-dancing), cursive; }
+.font-devanagari { font-family: var(--font-devanagari), serif; }
+
+/* ====== Background gradient transitions between chapters ====== */
+.bg-cosmos {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(45, 27, 78, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(232, 131, 154, 0.10) 0%, transparent 40%),
+    radial-gradient(ellipse at 20% 30%, rgba(212, 165, 116, 0.08) 0%, transparent 40%),
+    linear-gradient(180deg, #06030F 0%, #0E0518 50%, #1A0E2E 100%);
+}
+.bg-cosmos-deep {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(45, 27, 78, 0.4) 0%, transparent 70%),
+    linear-gradient(180deg, #06030F 0%, #0A0418 100%);
+}
+.bg-sunset {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 201, 168, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(232, 131, 154, 0.3) 0%, transparent 60%),
+    linear-gradient(180deg, #1A0E2E 0%, #5C0A1F 50%, #8B3A4A 80%, #D4A574 100%);
+}
+.bg-dawn {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 244, 224, 0.6) 0%, transparent 60%),
+    linear-gradient(180deg, #5C0A1F 0%, #8B3A4A 40%, #D4A574 80%, #FFF4E0 100%);
+}
+
+/* ====== Glow & sparkle effects ====== */
+.text-glow-gold {
+  text-shadow:
+    0 0 12px rgba(212, 165, 116, 0.7),
+    0 0 32px rgba(212, 165, 116, 0.4),
+    0 0 60px rgba(232, 131, 154, 0.25);
+}
+.text-glow-rose {
+  text-shadow:
+    0 0 12px rgba(232, 131, 154, 0.7),
+    0 0 32px rgba(232, 131, 154, 0.4);
+}
+.text-glow-soft {
+  text-shadow:
+    0 0 24px rgba(245, 240, 225, 0.5),
+    0 0 48px rgba(245, 240, 225, 0.25);
+}
+
+.star-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.pulse-glow-soft {
+  animation: pulseGlowSoft 3s ease-in-out infinite;
+}
+@keyframes pulseGlowSoft {
+  0%, 100% {
+    filter: drop-shadow(0 0 16px rgba(212, 165, 116, 0.5)) drop-shadow(0 0 32px rgba(232, 131, 154, 0.3));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 28px rgba(212, 165, 116, 0.8)) drop-shadow(0 0 56px rgba(232, 131, 154, 0.5));
+    transform: scale(1.05);
+  }
+}
+
+.float-gentle {
+  animation: floatGentle 6s ease-in-out infinite;
+}
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+  50% { transform: translateY(-12px) rotate(0.5deg); }
+}
+
+.float-gentle-slow {
+  animation: floatGentle 10s ease-in-out infinite;
+}
+
+/* Hidden scrollbar for the cosmic drift row */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Cinematic letterbox bars for video */
+.letterbox {
+  position: relative;
+}
+.letterbox::before,
+.letterbox::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8vh;
+  background: #000;
+  z-index: 5;
+  pointer-events: none;
+}
+.letterbox::before { top: 0; }
+.letterbox::after { bottom: 0; }
+
+/* Slow zoom for cinematic photo display */
+.slow-zoom {
+  animation: slowZoom 30s ease-out forwards;
+}
+@keyframes slowZoom {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.12); }
+}
+
+/* Hand-drawn underline that draws on hover */
+.draw-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.6s ease-out;
+}
+.draw-line:hover {
+  background-size: 100% 1px;
+}
