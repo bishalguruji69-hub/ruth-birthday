@@ -12,16 +12,9 @@ import { BackgroundMusic } from "@/components/birthday/parts/background-music";
 /**
  * CosmicJourney
  *
- * Flow:
- * 1. Opening (locked, click to begin)
- * 2. Cosmos chapter (universe blooms, prose)
- * 3. Her Light chapter (4-photo collage, prose)
- * 4. Poem chapter (sunset, Nepali poem writes itself)
- * 5. Video chapter (cinematic player)
- * 6. Promise chapter (final message + signature)
- *
- * Audio coordination: music starts on first user interaction (the click-to-begin),
- * then pauses automatically while the video is playing and resumes when it pauses.
+ * iOS notes:
+ * - Body overflow:hidden doesn't actually stop touch-scroll on iOS Safari.
+ *   We also lock touchmove + wheel + a passive:false listener for reliability.
  */
 export function CosmicJourney() {
   const [began, setBegan] = useState(false);
@@ -36,6 +29,33 @@ export function CosmicJourney() {
     }
     return () => {
       document.body.style.overflow = "auto";
+    };
+  }, [began]);
+
+  // iOS-specific scroll lock: prevent touchmove/wheel/keys while on the opening.
+  useEffect(() => {
+    if (began) return;
+    const preventScroll = (e: TouchEvent | WheelEvent | KeyboardEvent) => {
+      if (
+        e.cancelable &&
+        e.type === "touchmove" &&
+        (e as TouchEvent).touches.length > 1
+      ) {
+        return; // allow pinch-zoom-out (escape hatch)
+      }
+      e.preventDefault();
+    };
+    document.addEventListener("touchmove", preventScroll, { passive: false });
+    document.addEventListener("wheel", preventScroll, { passive: false });
+    const keysToBlock = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", " ", "Home", "End"];
+    const blockKeys = (e: KeyboardEvent) => {
+      if (keysToBlock.includes(e.key)) e.preventDefault();
+    };
+    document.addEventListener("keydown", blockKeys);
+    return () => {
+      document.removeEventListener("touchmove", preventScroll);
+      document.removeEventListener("wheel", preventScroll);
+      document.removeEventListener("keydown", blockKeys);
     };
   }, [began]);
 
@@ -63,9 +83,6 @@ export function CosmicJourney() {
         </>
       )}
 
-      {/* Background music:
-          - autoStart = began → music starts on first user interaction (the click-to-begin)
-          - pauseForVideo = videoPlaying → music pauses while video plays, resumes when video pauses */}
       <BackgroundMusic autoStart={began} pauseForVideo={videoPlaying} />
     </main>
   );

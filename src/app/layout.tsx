@@ -1,4 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
 import { Cormorant_Garamond, Inter, Dancing_Script, Noto_Serif_Devanagari } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";

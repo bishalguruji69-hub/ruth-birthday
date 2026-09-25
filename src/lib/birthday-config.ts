@@ -79,7 +79,7 @@ export const birthdayConfig = {
     promise: {
       // The final chapter
       headline: "Happy Birthday,",
-      nameLine: "Ruth Gurung.",
+      nameLine: "Ruth Tamang.",
       body:
         "However many orbits the earth makes around the sun, I want to be " +
         "beside you for every single one. Thank you for being born. Thank " +
@@ -110,7 +110,7 @@ export const birthdayConfig = {
       "/assets/photos/image_3.jpeg",
       "/assets/photos/image_4.jpeg",
       "/assets/photos/image_5.jpeg",
-      "/assets/photos/image_6.jpg",
+      "/assets/photos/image_6.JPG",
     ],
     video: "/assets/video/birthday_video.mp4",
   },

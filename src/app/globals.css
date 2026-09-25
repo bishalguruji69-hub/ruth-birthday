@@ -84,14 +84,42 @@
   }
   html {
     scroll-behavior: smooth;
+    /* Remove 300ms tap delay on mobile + remove tap highlight */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
   }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-inter), system-ui, sans-serif;
     overflow-x: hidden;
     background: var(--cosmic-deep);
+    /* Prevent iOS rubber-band scroll bounce when locked */
+    overscroll-behavior: none;
+  }
+  /* Make all interactive elements tap-friendly on iOS */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
+
+/* ====== iOS-safe viewport heights ====== */
+.h-screen-safe {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+}
+.min-h-screen-safe {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+/* Safe-area insets for iPhone notch + home indicator */
+.pb-safe  { padding-bottom: env(safe-area-inset-bottom, 0); }
+.pt-safe  { padding-top:    env(safe-area-inset-top, 0); }
+.bottom-safe { bottom: calc(env(safe-area-inset-bottom, 0) + 1rem); }
+.right-safe  { right:  calc(env(safe-area-inset-right, 0) + 1rem); }
 
 /* ====== Cosmic typography utilities ====== */
 .font-display { font-family: var(--font-cormorant), Georgia, serif; }

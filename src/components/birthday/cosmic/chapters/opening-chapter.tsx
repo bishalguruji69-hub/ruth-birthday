@@ -9,7 +9,12 @@ type Props = { onBegin: () => void };
 /**
  * OpeningChapter
  * Pitch black. Her name appears letter by letter, then a soft invitation.
- * A single pulsing dot at the bottom invites the user to click anywhere.
+ *
+ * iOS-specific notes:
+ * - The clickable layer is a real <button> (not a <section> with onClick)
+ *   because iOS Safari treats <button> clicks as a "user gesture" for media
+ *   autoplay, while <section onClick> is unreliable for both clicks and audio.
+ * - `touch-action: manipulation` removes the 300ms tap delay.
  */
 export function OpeningChapter({ onBegin }: Props) {
   const name = birthdayConfig.herShortName;
@@ -17,7 +22,6 @@ export function OpeningChapter({ onBegin }: Props) {
   const [showRest, setShowRest] = useState(false);
   const [bursting, setBursting] = useState(false);
 
-  // Reveal her name letter by letter
   useEffect(() => {
     if (revealed >= name.length) {
       const t = setTimeout(() => setShowRest(true), 700);
@@ -35,10 +39,18 @@ export function OpeningChapter({ onBegin }: Props) {
 
   return (
     <section
-      onClick={handleClick}
-      className="relative flex h-[100svh] cursor-pointer flex-col items-center justify-center overflow-hidden bg-cosmos-deep"
+      className="relative flex h-screen-safe flex-col items-center justify-center overflow-hidden bg-cosmos-deep"
       aria-label="Opening"
     >
+      {/* Clickable overlay button — real <button> for iOS compatibility */}
+      <button
+        type="button"
+        onClick={handleClick}
+        aria-label="Begin the experience"
+        className="absolute inset-0 z-20 h-full w-full cursor-pointer bg-transparent focus:outline-none"
+        style={{ touchAction: "manipulation" }}
+      />
+
       {/* Faint pre-burst radial glow */}
       <motion.div
         className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full"
@@ -70,7 +82,7 @@ export function OpeningChapter({ onBegin }: Props) {
                   : { opacity: 0, y: 24, filter: "blur(8px)" }
               }
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-display text-7xl font-light tracking-wide text-[#F5F0E1] sm:text-9xl"
+              className="font-display text-6xl font-light tracking-wide text-[#F5F0E1] sm:text-9xl"
               style={{ textShadow: "0 0 40px rgba(212, 165, 116, 0.6)" }}
             >
               {letter}
@@ -88,11 +100,11 @@ export function OpeningChapter({ onBegin }: Props) {
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="mt-10 flex flex-col items-center"
             >
-              <p className="font-display text-xl font-light italic text-[#F5F0E1]/80 sm:text-2xl">
+              <p className="font-display text-lg font-light italic text-[#F5F0E1]/80 sm:text-2xl">
                 {birthdayConfig.chapters.opening.invitation}
               </p>
               <motion.p
-                className="mt-12 text-xs uppercase tracking-[0.4em] text-[#D4A574]/70"
+                className="mt-12 text-[10px] uppercase tracking-[0.3em] text-[#D4A574]/70 sm:text-xs sm:tracking-[0.4em]"
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 2.5, repeat: Infinity }}
               >

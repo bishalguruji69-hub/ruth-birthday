@@ -29,7 +29,7 @@ export function PromiseChapter({ onReplay }: Props) {
   }, [fired]);
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-dawn px-6 py-32 text-center">
+    <section className="relative flex min-h-screen-safe flex-col items-center justify-center overflow-hidden bg-dawn px-6 py-32 text-center">
       <StarfieldCanvas density={0.4} theme="dawn" />
 
       <div className="relative z-10 flex max-w-2xl flex-col items-center">

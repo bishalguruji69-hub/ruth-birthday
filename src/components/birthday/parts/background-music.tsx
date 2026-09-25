@@ -75,7 +75,9 @@ export function BackgroundMusic({ autoStart = false, pauseForVideo = false }: Pr
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         aria-label={shouldPlay ? "Mute background music" : "Play background music"}
-        className="fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-full bg-white/80 shadow-lg backdrop-blur transition hover:bg-white"
+                // bottom-safe + right-safe account for iOS Safari bottom bar + iPhone notch
+        className="bottom-safe right-safe fixed z-50 grid h-12 w-12 place-items-center rounded-full bg-white/80 shadow-lg backdrop-blur transition hover:bg-white"
+        style={{ touchAction: "manipulation" }}
       >
         {shouldPlay ? (
           <Volume2 className="h-5 w-5 text-[#5C0A1F]" />
