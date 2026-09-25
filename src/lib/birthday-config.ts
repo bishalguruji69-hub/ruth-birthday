@@ -112,7 +112,7 @@ export const birthdayConfig = {
       "/assets/photos/gallery-4.jpg",
       "/assets/photos/gallery-5.jpg",
     ],
-    video: "/assets/video/birthday-video.mp4",
+    video: "/assets/video/birthday_video.mp4",
   },
 } as const;
 
